@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Rotating Cube</title>
+    <title>3D Rotating Cube with Camera Controls</title>
     <style>
         * {
             margin: 0;
@@ -28,6 +28,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            position: relative;
             transition: transform 0.1s; /* Smooth transition for camera movement */
         }
 
@@ -74,14 +75,12 @@
     </div>
 
     <script>
-        // Variables for tracking mouse movement
+        // Variables for controlling camera position and rotation
         let isDragging = false;
         let lastX = 0;
         let lastY = 0;
         let rotationX = 0;
         let rotationY = 0;
-
-        // Camera movement variables
         let cameraPosX = 0;
         let cameraPosY = 0;
         let cameraPosZ = -500; // Start behind the cube
@@ -89,7 +88,7 @@
         const cube = document.querySelector('.cube');
         const scene = document.querySelector('.scene');
 
-        // Mouse events for controlling the cube rotation
+        // Mouse events for controlling the camera rotation
         document.addEventListener('mousedown', (event) => {
             isDragging = true;
             lastX = event.clientX;
@@ -102,10 +101,11 @@
             const deltaX = event.clientX - lastX;
             const deltaY = event.clientY - lastY;
 
-            rotationX += deltaY * 0.5; // Controls the X-axis rotation
-            rotationY += deltaX * 0.5; // Controls the Y-axis rotation
+            rotationX += deltaY * 0.5; // Controls the X-axis rotation (up/down)
+            rotationY += deltaX * 0.5; // Controls the Y-axis rotation (left/right)
 
-            cube.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
+            // Apply the rotation to the camera (scene element)
+            scene.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg) translate3d(${cameraPosX}px, ${cameraPosY}px, ${cameraPosZ}px)`;
 
             lastX = event.clientX;
             lastY = event.clientY;
@@ -115,27 +115,22 @@
             isDragging = false;
         });
 
-        // Prevent right-click context menu from interfering
-        document.addEventListener('contextmenu', (event) => {
-            event.preventDefault();
-        });
-
-        // Keydown events for WASD controls
+        // Keydown events for WASD controls (move camera position)
         document.addEventListener('keydown', (event) => {
             const moveSpeed = 20;
 
             if (event.key === 'w') {
-                cameraPosY += moveSpeed;  // Move up
+                cameraPosZ += moveSpeed;  // Move forward (decrease Z)
             } else if (event.key === 's') {
-                cameraPosY -= moveSpeed;  // Move down
+                cameraPosZ -= moveSpeed;  // Move backward (increase Z)
             } else if (event.key === 'a') {
-                cameraPosX -= moveSpeed;  // Move left
+                cameraPosX += moveSpeed;  // Move left (decrease X)
             } else if (event.key === 'd') {
-                cameraPosX += moveSpeed;  // Move right
+                cameraPosX -= moveSpeed;  // Move right (increase X)
             }
 
-            // Apply the camera movement to the scene
-            scene.style.transform = `translate3d(${cameraPosX}px, ${cameraPosY}px, ${cameraPosZ}px)`;
+            // Apply the camera position to the scene
+            scene.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg) translate3d(${cameraPosX}px, ${cameraPosY}px, ${cameraPosZ}px)`;
         });
 
         // Prevent right-click context menu from interfering
