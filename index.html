@@ -3,83 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Boeing 747 (Simplified) with CSS & JS</title>
+    <title>3D Boeing 747 (Detailed)</title>
     <style>
         body {
             margin: 0;
-            overflow: hidden;
-            background-color: #87ceeb; /* Sky blue background */
-        }
-
-        .scene {
-            width: 100%;
+            background-color: #87ceeb;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            perspective: 1000px; /* 3D perspective */
+            overflow: hidden;
+        }
+
+        .scene {
+            width: 100%;
+            height: 100%;
+            perspective: 1500px; /* Perspective depth */
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .plane {
             width: 600px;
             height: 150px;
-            background-color: #fff;
             position: relative;
             transform-style: preserve-3d;
-            transform: rotateX(0deg) rotateY(0deg);
+            transform: rotateX(20deg) rotateY(45deg);
             animation: rotatePlane 10s infinite linear;
         }
 
-        /* Fuselage */
+        /* Fuselage (Body of the plane) */
         .fuselage {
-            width: 100%;
-            height: 80px;
-            background-color: #ddd;
-            border-radius: 40px;
             position: absolute;
+            width: 100%;
+            height: 100px;
+            background-color: #d1d1d1;
+            border-radius: 50px;
             top: 50px;
             left: 0;
+            transform: translateZ(150px); /* Push fuselage forward */
         }
 
-        /* Cockpit */
+        /* Cockpit (Front of the plane) */
         .cockpit {
             position: absolute;
-            top: -25px;
-            left: 70px;
-            width: 100px;
-            height: 50px;
+            top: -30px;
+            left: 60px;
+            width: 120px;
+            height: 60px;
             background-color: #444;
-            border-radius: 10px;
+            border-radius: 15px;
+            transform: rotateY(20deg);
         }
 
         /* Wings */
         .wing {
             position: absolute;
-            top: 50px;
+            top: 80px;
             left: 50%;
-            transform: translateX(-50%);
-            width: 250px;
+            transform: translateX(-50%) rotateX(15deg) rotateZ(0deg);
+            width: 300px;
             height: 50px;
-            background-color: #333;
-            border-radius: 5px;
+            background-color: #666;
+            border-radius: 10px;
         }
 
-        /* Tail */
+        /* Tail (Vertical Stabilizer) */
         .tail {
             position: absolute;
-            top: -40px;
-            left: 275px;
+            top: -80px;
+            left: 270px;
             width: 60px;
-            height: 100px;
-            background-color: #333;
-            border-radius: 10px;
+            height: 120px;
+            background-color: #666;
+            border-radius: 20px;
+            transform: rotateX(60deg);
+        }
+
+        /* Horizontal Stabilizers */
+        .stabilizer {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            width: 80px;
+            height: 30px;
+            background-color: #666;
+            transform: translateX(-50%) rotateX(-10deg);
         }
 
         /* Engines */
         .engine {
             position: absolute;
-            top: 30px;
-            width: 60px;
+            top: 40px;
+            width: 80px;
             height: 40px;
             background-color: #555;
             border-radius: 50%;
@@ -95,10 +112,13 @@
 
         @keyframes rotatePlane {
             0% {
-                transform: rotateX(0deg) rotateY(0deg);
+                transform: rotateX(20deg) rotateY(45deg);
+            }
+            50% {
+                transform: rotateX(40deg) rotateY(90deg);
             }
             100% {
-                transform: rotateX(360deg) rotateY(360deg);
+                transform: rotateX(20deg) rotateY(45deg);
             }
         }
     </style>
@@ -106,12 +126,20 @@
 <body>
     <div class="scene">
         <div class="plane">
-            <div class="fuselage"></div>
-            <div class="cockpit"></div>
-            <div class="wing"></div>
-            <div class="tail"></div>
-            <div class="engine left"></div>
-            <div class="engine right"></div>
+            <!-- Fuselage -->
+            <div class="fuselage">
+                <!-- Cockpit -->
+                <div class="cockpit"></div>
+                <!-- Wings -->
+                <div class="wing"></div>
+                <!-- Tail -->
+                <div class="tail"></div>
+                <!-- Horizontal Stabilizer -->
+                <div class="stabilizer"></div>
+                <!-- Engines -->
+                <div class="engine left"></div>
+                <div class="engine right"></div>
+            </div>
         </div>
     </div>
 </body>
