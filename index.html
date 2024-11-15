@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Boeing 747 Model</title>
+    <title>3D Cube</title>
     <style>
         * {
             margin: 0;
@@ -16,190 +16,92 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #87ceeb;
+            background-color: #f0f0f0;
             overflow: hidden;
         }
 
         .scene {
-            width: 100%;
-            height: 100%;
-            perspective: 1500px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            width: 400px;
+            height: 400px;
+            perspective: 800px;
         }
 
-        .plane {
-            width: 600px;
-            height: 150px;
+        .cube {
+            width: 200px;
+            height: 200px;
             position: relative;
             transform-style: preserve-3d;
-            transform: rotateX(20deg) rotateY(20deg);
-            animation: rotatePlane 10s infinite linear;
+            animation: rotateCube 5s infinite linear;
         }
 
-        /* Fuselage */
-        .fuselage {
-            width: 100%;
-            height: 100px;
-            background-color: #ddd;
-            border-radius: 50px;
+        /* Faces of the Cube */
+        .face {
             position: absolute;
-            top: 50px;
-            left: 0;
-            transform: translateZ(200px);
-        }
-
-        /* Cockpit */
-        .cockpit {
-            position: absolute;
-            top: -25px;
-            left: 70px;
-            width: 120px;
-            height: 60px;
-            background-color: #444;
-            border-radius: 10px;
-            transform: translateZ(10px);
-        }
-
-        /* Wings */
-        .wing {
-            position: absolute;
-            top: 50px;
-            left: 50%;
-            transform: translateX(-50%) rotateX(15deg) translateZ(-50px);
-            width: 300px;
-            height: 60px;
-            background-color: #333;
-            border-radius: 10px;
-        }
-
-        /* Engines */
-        .engine {
-            position: absolute;
-            top: 40px;
-            width: 80px;
-            height: 40px;
-            background-color: #555;
-            border-radius: 50%;
-        }
-
-        .engine.left {
-            left: 100px;
-        }
-
-        .engine.right {
-            right: 100px;
-        }
-
-        /* Tail */
-        .tail {
-            position: absolute;
-            top: -50px;
-            left: 270px;
-            width: 60px;
-            height: 120px;
-            background-color: #666;
-            border-radius: 20px;
-            transform: rotateX(60deg) translateZ(-150px);
-        }
-
-        /* Horizontal Stabilizer */
-        .stabilizer {
-            position: absolute;
-            top: 40px;
-            left: 50%;
-            width: 100px;
-            height: 30px;
-            background-color: #666;
-            transform: translateX(-50%) rotateX(-10deg);
-        }
-
-        @keyframes rotatePlane {
-            0% {
-                transform: rotateX(20deg) rotateY(20deg);
-            }
-            50% {
-                transform: rotateX(20deg) rotateY(360deg);
-            }
-            100% {
-                transform: rotateX(20deg) rotateY(20deg);
-            }
-        }
-
-        /* Plane controls: Buttons for interactivity */
-        .controls {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 10;
-        }
-
-        button {
-            padding: 10px;
-            margin: 5px;
-            cursor: pointer;
-            background-color: #fff;
+            width: 200px;
+            height: 200px;
+            background-color: rgba(255, 255, 255, 0.9);
             border: 1px solid #ccc;
-            border-radius: 5px;
+        }
+
+        .front  { transform: translateZ(100px); background-color: red; }
+        .back   { transform: rotateY(180deg) translateZ(100px); background-color: green; }
+        .left   { transform: rotateY(-90deg) translateZ(100px); background-color: blue; }
+        .right  { transform: rotateY(90deg) translateZ(100px); background-color: yellow; }
+        .top    { transform: rotateX(90deg) translateZ(100px); background-color: purple; }
+        .bottom { transform: rotateX(-90deg) translateZ(100px); background-color: orange; }
+
+        @keyframes rotateCube {
+            0% { transform: rotateX(0deg) rotateY(0deg); }
+            100% { transform: rotateX(360deg) rotateY(360deg); }
         }
     </style>
 </head>
 <body>
     <div class="scene">
-        <div class="plane" id="plane">
-            <!-- Fuselage -->
-            <div class="fuselage">
-                <!-- Cockpit -->
-                <div class="cockpit"></div>
-                <!-- Wings -->
-                <div class="wing"></div>
-                <!-- Tail -->
-                <div class="tail"></div>
-                <!-- Stabilizer -->
-                <div class="stabilizer"></div>
-                <!-- Engines -->
-                <div class="engine left"></div>
-                <div class="engine right"></div>
-            </div>
+        <div class="cube">
+            <!-- Cube Faces -->
+            <div class="face front"></div>
+            <div class="face back"></div>
+            <div class="face left"></div>
+            <div class="face right"></div>
+            <div class="face top"></div>
+            <div class="face bottom"></div>
         </div>
     </div>
 
-    <!-- Controls for Interactivity -->
-    <div class="controls">
-        <button onclick="rotatePlane('x')">Rotate X</button>
-        <button onclick="rotatePlane('y')">Rotate Y</button>
-        <button onclick="rotatePlane('z')">Rotate Z</button>
-        <button onclick="resetRotation()">Reset</button>
-    </div>
-
     <script>
-        let plane = document.getElementById("plane");
-        let rotationX = 20;
-        let rotationY = 20;
-        let rotationZ = 0;
+        // Example of adding interactivity with JavaScript if needed
+        const cube = document.querySelector('.cube');
+        let rotateX = 0;
+        let rotateY = 0;
 
-        function rotatePlane(axis) {
-            if (axis === 'x') {
-                rotationX += 10;
-            } else if (axis === 'y') {
-                rotationY += 10;
-            } else if (axis === 'z') {
-                rotationZ += 10;
+        // Add event listener to rotate the cube with mouse drag
+        let isMouseDown = false;
+        let lastX, lastY;
+
+        cube.addEventListener('mousedown', (e) => {
+            isMouseDown = true;
+            lastX = e.clientX;
+            lastY = e.clientY;
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (isMouseDown) {
+                const deltaX = e.clientX - lastX;
+                const deltaY = e.clientY - lastY;
+
+                rotateX += deltaY;
+                rotateY += deltaX;
+
+                cube.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                lastX = e.clientX;
+                lastY = e.clientY;
             }
-            updateRotation();
-        }
+        });
 
-        function resetRotation() {
-            rotationX = 20;
-            rotationY = 20;
-            rotationZ = 0;
-            updateRotation();
-        }
-
-        function updateRotation() {
-            plane.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg) rotateZ(${rotationZ}deg)`;
-        }
+        window.addEventListener('mouseup', () => {
+            isMouseDown = false;
+        });
     </script>
 </body>
 </html>
