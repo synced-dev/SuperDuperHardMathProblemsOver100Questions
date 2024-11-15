@@ -16,18 +16,19 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: black; /* Changed to black */
+            background-color: black;
             overflow: hidden;
         }
 
         .scene {
             width: 400px;
             height: 400px;
-            perspective: 1000px; /* This creates the depth effect */
+            perspective: 1000px;
             transform-style: preserve-3d;
             display: flex;
             justify-content: center;
             align-items: center;
+            transition: transform 0.1s; /* Smooth transition for camera movement */
         }
 
         .cube {
@@ -42,11 +43,10 @@
             position: absolute;
             width: 200px;
             height: 200px;
-            background-color: red; /* Changed to red */
+            background-color: red;
             border: 1px solid #fff;
         }
 
-        /* Position each face of the cube */
         .front  { transform: translateZ(100px); }
         .back   { transform: rotateY(180deg) translateZ(100px); }
         .left   { transform: rotateY(-90deg) translateZ(100px); }
@@ -55,14 +55,9 @@
         .bottom { transform: rotateX(-90deg) translateZ(100px); }
 
         @keyframes rotateCube {
-            0% {
-                transform: rotateX(0deg) rotateY(0deg);
-            }
-            100% {
-                transform: rotateX(360deg) rotateY(360deg);
-            }
+            0% { transform: rotateX(0deg) rotateY(0deg); }
+            100% { transform: rotateX(360deg) rotateY(360deg); }
         }
-
     </style>
 </head>
 <body>
@@ -86,9 +81,15 @@
         let rotationX = 0;
         let rotationY = 0;
 
-        const cube = document.querySelector('.cube');
+        // Camera movement variables
+        let cameraPosX = 0;
+        let cameraPosY = 0;
+        let cameraPosZ = -500; // Start behind the cube
 
-        // Mouse events for controlling the cube
+        const cube = document.querySelector('.cube');
+        const scene = document.querySelector('.scene');
+
+        // Mouse events for controlling the cube rotation
         document.addEventListener('mousedown', (event) => {
             isDragging = true;
             lastX = event.clientX;
@@ -112,6 +113,29 @@
 
         document.addEventListener('mouseup', () => {
             isDragging = false;
+        });
+
+        // Prevent right-click context menu from interfering
+        document.addEventListener('contextmenu', (event) => {
+            event.preventDefault();
+        });
+
+        // Keydown events for WASD controls
+        document.addEventListener('keydown', (event) => {
+            const moveSpeed = 20;
+
+            if (event.key === 'w') {
+                cameraPosY += moveSpeed;  // Move up
+            } else if (event.key === 's') {
+                cameraPosY -= moveSpeed;  // Move down
+            } else if (event.key === 'a') {
+                cameraPosX -= moveSpeed;  // Move left
+            } else if (event.key === 'd') {
+                cameraPosX += moveSpeed;  // Move right
+            }
+
+            // Apply the camera movement to the scene
+            scene.style.transform = `translate3d(${cameraPosX}px, ${cameraPosY}px, ${cameraPosZ}px)`;
         });
 
         // Prevent right-click context menu from interfering
