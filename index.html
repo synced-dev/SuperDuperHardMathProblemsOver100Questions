@@ -16,14 +16,18 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #87ceeb;
+            background-color: black; /* Changed to black */
             overflow: hidden;
         }
 
         .scene {
             width: 400px;
             height: 400px;
-            perspective: 1000px; /* This is the key to creating depth */
+            perspective: 1000px; /* This creates the depth effect */
+            transform-style: preserve-3d;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .cube {
@@ -38,7 +42,7 @@
             position: absolute;
             width: 200px;
             height: 200px;
-            background-color: rgba(0, 128, 255, 0.7);
+            background-color: red; /* Changed to red */
             border: 1px solid #fff;
         }
 
@@ -73,5 +77,47 @@
             <div class="face bottom"></div>
         </div>
     </div>
+
+    <script>
+        // Variables for tracking mouse movement
+        let isDragging = false;
+        let lastX = 0;
+        let lastY = 0;
+        let rotationX = 0;
+        let rotationY = 0;
+
+        const cube = document.querySelector('.cube');
+
+        // Mouse events for controlling the cube
+        document.addEventListener('mousedown', (event) => {
+            isDragging = true;
+            lastX = event.clientX;
+            lastY = event.clientY;
+        });
+
+        document.addEventListener('mousemove', (event) => {
+            if (!isDragging) return;
+
+            const deltaX = event.clientX - lastX;
+            const deltaY = event.clientY - lastY;
+
+            rotationX += deltaY * 0.5; // Controls the X-axis rotation
+            rotationY += deltaX * 0.5; // Controls the Y-axis rotation
+
+            cube.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
+
+            lastX = event.clientX;
+            lastY = event.clientY;
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        // Prevent right-click context menu from interfering
+        document.addEventListener('contextmenu', (event) => {
+            event.preventDefault();
+        });
+    </script>
 </body>
 </html>
