@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Boeinghhhhhhhh 747 with Cubes</title>
+    <title>3D Boeing yyyy with Cubes</title>
     <style>
         * {
             margin: 0;
@@ -32,79 +32,84 @@
             height: 200px;
             position: relative;
             transform-style: preserve-3d;
-            transform: rotateX(20deg) rotateY(30deg);
-            animation: rotatePlane 10s infinite linear;
+            transform: rotateX(0deg) rotateY(0deg);
+            transform-origin: center;
+            animation: rotatePlane 15s infinite linear;
         }
 
         /* Fuselage */
         .fuselage {
             width: 300px;
             height: 60px;
+            depth: 200px;
             background-color: #cccccc;
             position: absolute;
-            top: 100px;
+            top: 0;
             left: 50px;
-            transform: translateZ(100px);
+            transform: rotateY(0deg) translateZ(0px);
         }
 
         /* Cockpit */
         .cockpit {
             width: 100px;
             height: 40px;
+            depth: 50px;
             background-color: #666;
             position: absolute;
             top: -40px;
-            left: 80px;
-            transform: translateZ(50px);
+            left: 120px;
+            transform: rotateY(0deg) translateZ(30px);
         }
 
         /* Wings */
         .wing {
             position: absolute;
-            top: 40px;
+            top: 20px;
             left: 50%;
-            transform: translateX(-50%) rotateX(15deg) translateZ(-50px);
-            width: 250px;
+            transform: translateX(-50%) rotateX(15deg) translateZ(-40px);
+            width: 240px;
             height: 40px;
             background-color: #333;
-            border-radius: 10px;
+            transform-origin: center;
         }
 
         /* Engines */
         .engine {
             position: absolute;
-            top: 40px;
-            width: 80px;
+            top: 20px;
+            width: 60px;
             height: 30px;
+            depth: 40px;
             background-color: #555;
             border-radius: 50%;
         }
 
         .engine.left {
-            left: 60px;
+            left: 50px;
         }
 
         .engine.right {
-            right: 60px;
+            right: 50px;
         }
 
         /* Tail */
         .tail {
             position: absolute;
-            top: -50px;
-            left: 250px;
+            top: -60px;
+            left: 200px;
             width: 60px;
             height: 80px;
+            depth: 50px;
             background-color: #444;
-            transform: rotateX(60deg) translateZ(-100px);
+            transform: rotateX(60deg) translateZ(-80px);
         }
 
         /* Stabilizer */
         .stabilizer {
             position: absolute;
-            top: 30px;
+            top: 40px;
             left: 50%;
-            width: 100px;
+            width: 120px;
             height: 20px;
             background-color: #444;
             transform: translateX(-50%) rotateX(-10deg);
@@ -112,9 +117,9 @@
 
         /* Animation to rotate the airplane */
         @keyframes rotatePlane {
-            0% { transform: rotateX(20deg) rotateY(20deg); }
-            50% { transform: rotateX(20deg) rotateY(360deg); }
-            100% { transform: rotateX(20deg) rotateY(20deg); }
+            0% { transform: rotateX(0deg) rotateY(0deg); }
+            50% { transform: rotateX(20deg) rotateY(180deg); }
+            100% { transform: rotateX(0deg) rotateY(360deg); }
         }
 
         .controls {
@@ -138,17 +143,12 @@
 <body>
     <div class="scene">
         <div class="plane" id="plane">
-            <!-- Plane Components -->
+            <!-- Plane Components (Using cubes) -->
             <div class="fuselage">
-                <!-- Cockpit -->
                 <div class="cockpit"></div>
-                <!-- Wings -->
                 <div class="wing"></div>
-                <!-- Tail -->
                 <div class="tail"></div>
-                <!-- Stabilizer -->
                 <div class="stabilizer"></div>
-                <!-- Engines -->
                 <div class="engine left"></div>
                 <div class="engine right"></div>
             </div>
@@ -165,8 +165,8 @@
 
     <script>
         let plane = document.getElementById("plane");
-        let rotationX = 20;
-        let rotationY = 30;
+        let rotationX = 0;
+        let rotationY = 0;
         let rotationZ = 0;
 
         function rotatePlane(axis) {
@@ -181,8 +181,8 @@
         }
 
         function resetRotation() {
-            rotationX = 20;
-            rotationY = 30;
+            rotationX = 0;
+            rotationY = 0;
             rotationZ = 0;
             updateRotation();
         }
