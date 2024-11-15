@@ -3,62 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Plane with CSS & JS</title>
+    <title>3D Boeing 747 (Simplified) with CSS & JS</title>
     <style>
         body {
             margin: 0;
             overflow: hidden;
-            height: 100vh;
-            background-color: #1e1e1e;
+            background-color: #87ceeb; /* Sky blue background */
         }
 
         .scene {
             width: 100%;
-            height: 100%;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            perspective: 800px; /* 3D perspective */
+            perspective: 1000px; /* 3D perspective */
         }
 
         .plane {
-            width: 200px;
-            height: 100px;
-            background-color: #ff5733;
+            width: 600px;
+            height: 150px;
+            background-color: #fff;
             position: relative;
             transform-style: preserve-3d;
             transform: rotateX(0deg) rotateY(0deg);
-            animation: rotatePlane 5s infinite linear;
+            animation: rotatePlane 10s infinite linear;
         }
 
+        /* Fuselage */
+        .fuselage {
+            width: 100%;
+            height: 80px;
+            background-color: #ddd;
+            border-radius: 40px;
+            position: absolute;
+            top: 50px;
+            left: 0;
+        }
+
+        /* Cockpit */
+        .cockpit {
+            position: absolute;
+            top: -25px;
+            left: 70px;
+            width: 100px;
+            height: 50px;
+            background-color: #444;
+            border-radius: 10px;
+        }
+
+        /* Wings */
         .wing {
             position: absolute;
-            top: 30px;
-            left: -80px;
-            width: 160px;
-            height: 40px;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 250px;
+            height: 50px;
             background-color: #333;
             border-radius: 5px;
         }
 
+        /* Tail */
         .tail {
             position: absolute;
             top: -40px;
-            left: 80px;
-            width: 40px;
-            height: 80px;
+            left: 275px;
+            width: 60px;
+            height: 100px;
             background-color: #333;
-            border-radius: 5px;
+            border-radius: 10px;
         }
 
-        .cockpit {
+        /* Engines */
+        .engine {
             position: absolute;
-            top: 20px;
-            left: 80px;
-            width: 40px;
-            height: 60px;
-            background-color: #444;
-            border-radius: 5px;
+            top: 30px;
+            width: 60px;
+            height: 40px;
+            background-color: #555;
+            border-radius: 50%;
+        }
+
+        .engine.left {
+            left: 100px;
+        }
+
+        .engine.right {
+            right: 100px;
         }
 
         @keyframes rotatePlane {
@@ -74,9 +106,12 @@
 <body>
     <div class="scene">
         <div class="plane">
+            <div class="fuselage"></div>
+            <div class="cockpit"></div>
             <div class="wing"></div>
             <div class="tail"></div>
-            <div class="cockpit"></div>
+            <div class="engine left"></div>
+            <div class="engine right"></div>
         </div>
     </div>
 </body>
