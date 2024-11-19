@@ -3,140 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Rotating Cube with Camera Controls</title>
+    <title>Protected Page</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: black;
-            overflow: hidden;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
         }
-
-        .scene {
-            width: 400px;
-            height: 400px;
-            perspective: 1000px;
-            transform-style: preserve-3d;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            transition: transform 0.1s; /* Smooth transition for camera movement */
+        .container {
+            display: inline-block;
+            text-align: left;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
-
-        .cube {
+        input[type="password"] {
+            padding: 10px;
+            font-size: 16px;
             width: 200px;
-            height: 200px;
-            position: relative;
-            transform-style: preserve-3d;
-            animation: rotateCube 5s infinite linear;
+            margin-bottom: 10px;
         }
-
-        .face {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            background-color: red;
-            border: 1px solid #fff;
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
         }
-
-        .front  { transform: translateZ(100px); }
-        .back   { transform: rotateY(180deg) translateZ(100px); }
-        .left   { transform: rotateY(-90deg) translateZ(100px); }
-        .right  { transform: rotateY(90deg) translateZ(100px); }
-        .top    { transform: rotateX(90deg) translateZ(100px); }
-        .bottom { transform: rotateX(-90deg) translateZ(100px); }
-
-        @keyframes rotateCube {
-            0% { transform: rotateX(0deg) rotateY(0deg); }
-            100% { transform: rotateX(360deg) rotateY(360deg); }
+        .protected-content {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #4CAF50;
+            border-radius: 5px;
+            background-color: #e8f5e9;
+        }
+        #errorMessage {
+            color: red;
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div class="scene">
-        <div class="cube">
-            <!-- Each face of the cube -->
-            <div class="face front"></div>
-            <div class="face back"></div>
-            <div class="face left"></div>
-            <div class="face right"></div>
-            <div class="face top"></div>
-            <div class="face bottom"></div>
-        </div>
+
+    <div class="container" id="pinEntryContainer">
+        <h2>Enter PIN to Access Protected Content</h2>
+        <form id="pinForm" onsubmit="return checkPin()">
+            <label for="pin">PIN:</label>
+            <input type="password" id="pin" name="pin" required>
+            <button type="submit">Submit</button>
+        </form>
+        <p id="errorMessage">Incorrect PIN, please try again.</p>
+    </div>
+
+    <div class="protected-content" id="protectedContent">
+        <h1>Welcome to the Protected Content!</h1>
+        <p>You have successfully entered the correct PIN and gained access.</p>
+        <a href="#" onclick="window.location.reload();">Back to the PIN entry</a>
     </div>
 
     <script>
-        // Variables for controlling camera position and rotation
-        let isDragging = false;
-        let lastX = 0;
-        let lastY = 0;
-        let rotationX = 0;
-        let rotationY = 0;
-        let cameraPosX = 0;
-        let cameraPosY = 0;
-        let cameraPosZ = -500; // Start behind the cube
-
-        const cube = document.querySelector('.cube');
-        const scene = document.querySelector('.scene');
-
-        // Mouse events for controlling the camera rotation
-        document.addEventListener('mousedown', (event) => {
-            isDragging = true;
-            lastX = event.clientX;
-            lastY = event.clientY;
-        });
-
-        document.addEventListener('mousemove', (event) => {
-            if (!isDragging) return;
-
-            const deltaX = event.clientX - lastX;
-            const deltaY = event.clientY - lastY;
-
-            rotationX += deltaY * 0.5; // Controls the X-axis rotation (up/down)
-            rotationY += deltaX * 0.5; // Controls the Y-axis rotation (left/right)
-
-            // Apply the rotation to the camera (scene element)
-            scene.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg) translate3d(${cameraPosX}px, ${cameraPosY}px, ${cameraPosZ}px)`;
-
-            lastX = event.clientX;
-            lastY = event.clientY;
-        });
-
-        document.addEventListener('mouseup', () => {
-            isDragging = false;
-        });
-
-        // Keydown events for WASD controls (move camera position)
-        document.addEventListener('keydown', (event) => {
-            const moveSpeed = 20;
-
-            if (event.key === 'w') {
-                cameraPosZ += moveSpeed;  // Move forward (decrease Z)
-            } else if (event.key === 's') {
-                cameraPosZ -= moveSpeed;  // Move backward (increase Z)
-            } else if (event.key === 'a') {
-                cameraPosX += moveSpeed;  // Move left (decrease X)
-            } else if (event.key === 'd') {
-                cameraPosX -= moveSpeed;  // Move right (increase X)
+        function checkPin() {
+            const correctPin = "1234"; // The PIN you want to set
+            const userPin = document.getElementById("pin").value;
+            
+            if (userPin === correctPin) {
+                // Hide the PIN entry form and show the protected content
+                document.getElementById("pinEntryContainer").style.display = "none";
+                document.getElementById("protectedContent").style.display = "block";
+                document.getElementById("errorMessage").style.display = "none";
+            } else {
+                // Show an error message if the PIN is incorrect
+                document.getElementById("errorMessage").style.display = "block";
             }
 
-            // Apply the camera position to the scene
-            scene.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg) translate3d(${cameraPosX}px, ${cameraPosY}px, ${cameraPosZ}px)`;
-        });
-
-        // Prevent right-click context menu from interfering
-        document.addEventListener('contextmenu', (event) => {
-            event.preventDefault();
-        });
+            // Prevent form submission
+            return false;
+        }
     </script>
+
 </body>
 </html>
