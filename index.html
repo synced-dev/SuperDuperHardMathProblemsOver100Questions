@@ -62,10 +62,10 @@
 
     <script>
         function checkPin() {
-            const correctPin = "1234"; // The PIN you want to set
+            const webport = "56704"; // The PIN you want to set
             const userPin = document.getElementById("pin").value;
             
-            if (userPin === correctPin) {
+            if (userPin === webport) {
                 // Hide the PIN entry form and show the protected content
                 document.getElementById("pinEntryContainer").style.display = "none";
                 document.getElementById("protectedContent").style.display = "block";
